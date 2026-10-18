@@ -1,0 +1,39 @@
+# red_dns — red 10.10.10.0/24 del laboratorio de DNS.
+#   docker compose up -d --build      (la primera vez)
+#   docker compose exec ns1 bash      (entrar a un nodo: ns1, ns2, resolutor o cliente)
+#   docker compose stop / start       (apagar y encender conservando todo)
+# La carpeta de arriba (Acti-2-tec-wed-1) se ve dentro de cada nodo como /lab  →  /lab/lab07, /lab/lab08 …
+name: red_dns
+
+x-nodo: &nodo
+  build: .
+  image: tw1-red-dns:24.04
+  privileged: true          # necesario para systemd dentro del contenedor
+  cgroup: host
+  tmpfs: [/run, /run/lock, /tmp]
+  volumes:
+    - ..:/lab
+
+services:
+  ns1:
+    <<: *nodo
+    hostname: ns1
+    networks: { aula: { ipv4_address: 10.10.10.2 } }
+  ns2:
+    <<: *nodo
+    hostname: ns2
+    networks: { aula: { ipv4_address: 10.10.10.3 } }
+  resolutor:
+    <<: *nodo
+    hostname: resolutor
+    networks: { aula: { ipv4_address: 10.10.10.4 } }
+  cliente:
+    <<: *nodo
+    hostname: cliente
+    networks: { aula: { ipv4_address: 10.10.10.50 } }
+
+networks:
+  aula:
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24

@@ -1,0 +1,22 @@
+; /etc/unbound/rpz.horizonte.internal — Política de respuestas del colegio (RPZ, formato estándar de BIND/Unbound)
+; Nombre a la izquierda = dominio a filtrar (relativo al origen de la RPZ). Acción a la derecha:
+;   CNAME .          → responder "no existe" (NXDOMAIN)
+;   CNAME *.         → responder "existe pero sin datos" (NODATA)
+;   A <ip>           → redirigir a otra IP (p. ej., una página de aviso)
+$ORIGIN rpz.horizonte.internal.
+$TTL 300
+@   IN SOA localhost. ti.horizonte.internal. ( 2026100801 3600 600 86400 300 )
+@   IN NS  localhost.
+
+; 1. Sitios de apuestas: no existen para la red del colegio (y todos sus subdominios)
+apuestas-ejemplo.com          CNAME .
+; TODO: bloquear también TODOS los subdominios de apuestas-ejemplo.com
+*.apuestas-ejemplo.com        CNAME .
+
+; 2. Phishing que imita al colegio: se redirige a la página de aviso en www (10.10.10.20)
+; TODO: redirigir horizonte-notas-login.com (y sus subdominios) a la página de aviso 10.10.10.20
+horizonte-notas-login.com     A     10.10.10.20
+*.horizonte-notas-login.com   A     10.10.10.20
+
+; 3. Rastreador publicitario: existe pero sin respuesta (las páginas cargan igual, sin rastreo)
+rastreo.publicidad-ejemplo.net CNAME *.

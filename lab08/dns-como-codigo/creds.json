@@ -1,0 +1,9 @@
+{
+  "bind": {
+    "TYPE": "BIND",
+    "directory": "zonas"
+  },
+  "none": {
+    "TYPE": "NONE"
+  }
+}

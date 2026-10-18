@@ -1,0 +1,15 @@
+# Secretos: NUNCA al repositorio
+transferencia.key
+*.key
+compartido/
+creds.reales.json
+.env
+# Capturas de red
+*.pcap
+*.pcapng
+# Zonas generadas por DNSControl (se regeneran con dnscontrol push)
+lab08/dns-como-codigo/zonas/
+# Sistema
+Thumbs.db
+.DS_Store
+~$*

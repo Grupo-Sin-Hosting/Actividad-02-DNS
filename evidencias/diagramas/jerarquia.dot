@@ -1,0 +1,25 @@
+digraph J {
+  graph [rankdir=TB, fontname="DejaVu Sans", nodesep=1.2, ranksep=0.45, bgcolor="white", pad=0.3, newrank=true];
+  node [fontname="DejaVu Sans", fontsize=12, shape=box, style="rounded,filled", color="#1D4E89", fillcolor="#EEF3F9", penwidth=1.4, width=3.6];
+  edge [fontname="DejaVu Sans", fontsize=10.5, color="#1D4E89", penwidth=1.3];
+  raiz [label=<<B>. (raíz)</B><BR/><FONT POINT-SIZE="10">13 servidores a…m.root-servers.net</FONT>>, fillcolor="#0F2E4C", fontcolor="white"];
+  bo [label=<<B>.bo</B> — NIC Bolivia<BR/><FONT POINT-SIZE="10">ns.nic.bo · anycast.ns.nic.bo · ns2.nic.fr · ns.dns.br</FONT>>];
+  edubo [label=<<B>edu.bo</B><BR/><FONT POINT-SIZE="10">sin servidores propios: parte de la zona .bo</FONT>>, style="rounded,dashed", fillcolor="white"];
+  upds [label=<<B>upds.edu.bo</B> — Megalink<BR/><FONT POINT-SIZE="10">zona: ns2…ns5.megalink.com<BR/>delegación en .bo: ns2…ns6 (ns6 ⚠ coja)</FONT>>];
+  www [label=<<B>www.upds.edu.bo.  300  IN  A  35.212.117.103</B>>, fillcolor="#EAF6EC", color="#2E7D32"];
+  raiz -> bo [label="  delega (NS)"];
+  bo -> edubo [style=dashed, arrowhead=none];
+  edubo -> upds [label="  delega (NS)"];
+  upds -> www [label="  responde con autoridad"];
+
+  node [width=2.6, fillcolor="#FFF4E8", color="#C25E0A"];
+  edge [color="#C25E0A", fontcolor="#C25E0A", style=dashed];
+  dig [label=<<B>dig +trace</B><BR/><FONT POINT-SIZE="10">desde el servidor Ubuntu (Docker)</FONT>>];
+  res [label=<<B>1.1.1.1</B> · Cloudflare<BR/><FONT POINT-SIZE="10">resolutor recursivo</FONT>>];
+  {rank=same; raiz; res;}
+  {rank=same; bo; dig;}
+  dig -> res [label="① ¿raíces? → 120 ms", constraint=false];
+  dig -> raiz [label="② m.root 202.12.27.33 · 172 ms"];
+  dig -> bo [label="③ ns.nic.bo 166.114.1.40 · 108 ms", constraint=false];
+  dig -> upds [label="④ ns5.megalink.com 88.99.13.51 · 331 ms"];
+}

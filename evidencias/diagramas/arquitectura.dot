@@ -1,0 +1,19 @@
+digraph A {
+  graph [rankdir=LR, forcelabels=true, fontname="DejaVu Sans", nodesep=1.1, ranksep=0.9, pad=0.3, bgcolor="white"];
+  node [fontname="DejaVu Sans", fontsize=12, shape=box, style="rounded,filled", color="#1D4E89", fillcolor="#EEF3F9", penwidth=1.4];
+  edge [fontname="DejaVu Sans", fontsize=10.5, color="#1D4E89", penwidth=1.3];
+  subgraph cluster_red {
+    label="Red Docker red_dns · 10.10.10.0/24 · Ubuntu 24.04 + systemd"; fontsize=12; fontcolor="#0F2E4C"; color="#B8C4D2"; style="rounded";
+    cli [label=<<B>cliente</B><BR/>10.10.10.50<BR/><FONT POINT-SIZE="10">resolv.conf → 10.10.10.4</FONT>>, fillcolor="#FFF4E8", color="#C25E0A"];
+    res [label=<<B>resolutor</B> · Unbound 1.19.2<BR/>10.10.10.4<BR/><FONT POINT-SIZE="10">access-control · caché · DNSSEC<BR/>RPZ (filtro-colegio) · DoT</FONT>>];
+    ns1 [label=<<B>ns1</B> · BIND 9.18 primario<BR/>10.10.10.2<BR/><FONT POINT-SIZE="10">horizonte.internal<BR/>10.10.10.in-addr.arpa<BR/>recursion no · version oculta</FONT>>, fillcolor="#0F2E4C", fontcolor="white"];
+    ns2 [label=<<B>ns2</B> · BIND 9.18 secundario<BR/>10.10.10.3<BR/><FONT POINT-SIZE="10">copia de ambas zonas</FONT>>];
+    {rank=same; ns1; ns2;}
+    cli -> res [label="consultas :53"];
+    res -> ns1 [label="stub-zone"];
+    res -> ns2 [label="stub-zone"];
+    ns1 -> ns2 [xlabel="NOTIFY →\nAXFR/IXFR firmado\nTSIG hmac-sha256", color="#2E7D32", fontcolor="#2E7D32", dir=forward];
+  }
+  inet [label=<<B>Internet</B><BR/><FONT POINT-SIZE="10">1.1.1.1 (Cloudflare)<BR/>9.9.9.9 (Quad9)</FONT>>, fillcolor="white"];
+  res -> inet [label="forward-zone \".\"\nDoT TCP :853 (cifrado)", color="#C25E0A", fontcolor="#C25E0A"];
+}

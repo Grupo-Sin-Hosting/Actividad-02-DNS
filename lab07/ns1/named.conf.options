@@ -1,0 +1,16 @@
+// /etc/bind/named.conf.options — ns1: servidor AUTORITATIVO (no resuelve nombres ajenos)
+options {
+    directory "/var/cache/bind";
+
+    listen-on    { any; };
+    listen-on-v6 { none; };
+
+    recursion no;                // TODO: ¿debe un servidor autoritativo resolver nombres ajenos?
+    allow-query     { any; };     // cualquiera puede preguntar por NUESTRAS zonas
+    allow-transfer  { none; };    // por defecto nadie copia zonas (se abre por zona y con clave)
+
+    // TODO: ocultar la versión de BIND (responder "no disponible")
+    version "no disponible";
+    dnssec-validation auto;
+    minimal-responses yes;
+};
