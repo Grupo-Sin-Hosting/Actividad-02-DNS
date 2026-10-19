@@ -59,3 +59,10 @@ docker compose exec resolutor bash /lab/lab08/verificar_lab08.sh   # 17 de 17
 - `lab08/dns-como-codigo/creds.json` solo usa el proveedor `bind` local. Para un proveedor real (Cloudflare)
   el token se lee de una variable de entorno (`"apitoken": "$CLOUDFLARE_APITOKEN"`), nunca escrito en el archivo.
 - El resolutor solo acepta consultas de `127.0.0.0/8` y `10.10.10.0/24`.
+
+
+## Defensa — Rol Arquitectura (Lucas Carrasco)
+Explico la red red_dns: 4 contenedores en 10.10.10.0/24. ns1 (primario) y ns2 (secundario)
+son los autoritativos de horizonte.internal; el resolutor (Unbound) es el único que usan las PCs
+y el cliente lo usa como DNS. Con dig +trace muestro la jerarquía: raíz → .bo → upds.edu.bo,
+donde cada nivel entrega una referencia y solo el último responde con autoridad.
