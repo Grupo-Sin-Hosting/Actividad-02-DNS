@@ -32,3 +32,8 @@ La IA me sirvió sobre todo para diagnosticar: el SERVFAIL, el archivo que no se
 antes de cambiar algo. El resolutor quedó cerrado a la red del colegio, la RPZ solo tiene los dominios de la guía
 y no hay credenciales reales en el repositorio. Resultado final: **17 de 17** y el cliente resolviendo nombres
 internos, internet y el filtro sin `@`.
+
+## Defensa — Rol Resolutor (Lizeth Rodríguez)
+Explico el resolutor Unbound: solo acepta la red del colegio, valida DNSSEC (domain-insecure
+para .internal), permite la inversa privada (nodefault), sale cifrado por DoT al puerto 853
+y filtra con RPZ (apuestas → NXDOMAIN, phishing → 10.10.10.20). El cliente usa 10.10.10.4.
