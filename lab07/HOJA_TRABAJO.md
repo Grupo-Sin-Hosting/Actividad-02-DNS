@@ -132,3 +132,10 @@ ns2 considera que su copia ya no es confiable y **deja de responder** por la zon
 entonces, **todo el DNS del colegio cae**: www, portal, mail, la impresora y el aula. Con él dejan de funcionar el
 sitio, el correo y cualquier servicio que dependa de los nombres. Por eso hay que vigilar el primario, tener
 respaldos y, si la caída va a ser larga, promover el secundario a primario antes de que venza el `expire`.
+
+
+## Defensa — Rol Registros (Jacqueline Cáceres)
+Explico los registros de la zona: A (www → 10.10.10.20), CNAME (portal → www), MX 10 mail,
+TXT con SPF "v=spf1 mx -all" y CAA. En la zona inversa los PTR traducen IP → nombre.
+Un nombre sin punto final se completa con $ORIGIN; por eso en la inversa
+"www.horizonte.internal." debe llevar el punto.
