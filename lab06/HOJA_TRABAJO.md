@@ -176,3 +176,20 @@ las direcciones que usan las máquinas (`35.212.117.103`). Casi todos los servic
 Por eso un solo error —una delegación que apunta a un servidor que no responde, un serial que no se subió,
 un nombre sin punto final o un TTL mal elegido— puede tumbar a la vez el sitio, el correo y la renovación de
 certificados. Además, como las respuestas quedan en caché, el error (y su corrección) tarda en desaparecer.
+
+
+## Defensa — Rol Diagnóstico (Juniors Parapaino)
+
+En el Laboratorio 6 realizamos una radiografía DNS de dominios reales utilizando herramientas de diagnóstico como `dig`, `dig +trace` y consultas a servidores DNS.
+
+Durante el análisis del dominio `upds.edu.bo`, identificamos dos problemas importantes:
+
+1. **Delegación coja:** el servidor `ns6` no responde con autoridad para la zona correspondiente.
+2. **Error en el registro SOA:** el campo RNAME del responsable presenta un problema relacionado con el punto final del nombre de dominio.
+
+También aprendimos a verificar configuraciones DNS antes de aplicarlas utilizando:
+
+- `named-checkconf`: comprueba la sintaxis de la configuración de BIND9.
+- `named-checkzone`: verifica la estructura y validez de una zona DNS.
+
+**Conclusión:** Este laboratorio nos permitió identificar problemas de delegación y configuración DNS, comprender la importancia de los servidores autoritativos y validar nuestras configuraciones antes de ponerlas en funcionamiento.
