@@ -26,3 +26,8 @@ La IA me ayudó a preparar el entorno (la carpeta `red_dns` correcta y las rutas
 cada registro y opción de BIND, y a interpretar los mensajes de `named-checkzone`, `dig` y `journalctl`. Todo se
 comprobó en la red de laboratorio: 16 de 16 en el verificador y las transferencias firmadas con TSIG visibles en
 el journal de ns2. El secreto de la clave TSIG nunca salió de los servidores.
+
+## Defensa — Rol Sincronización (José María Orihuela)
+Explico cómo ns2 copia la zona de ns1: la transferencia solo se permite con la clave TSIG
+(sin clave sale "Transfer failed"). Cuando cambia la zona, ns1 envía un NOTIFY y ns2 copia
+solo si el serial es mayor; si no se sube el serial, ns2 queda desactualizado.
